@@ -15,9 +15,17 @@
 body {
     margin: 0;
     min-height: 100vh;
-    background: linear-gradient(135deg, #0f172a, #14532d);
-    color: white;
+
     font-family: Tahoma, Arial, sans-serif;
+
+    background: linear-gradient(
+        135deg,
+        #000000,
+        #450000,
+        #000000
+    );
+
+    color: white;
 
     display: flex;
     justify-content: center;
@@ -33,15 +41,18 @@ body {
 }
 
 h1 {
+    font-size: 35px;
     margin: 5px 0 15px;
-    font-size: 34px;
+
+    text-shadow:
+        0 0 15px #e00000;
 }
 
 .info {
     display: flex;
     justify-content: space-between;
 
-    background: rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.1);
 
     padding: 12px 18px;
 
@@ -49,15 +60,17 @@ h1 {
 
     margin-bottom: 12px;
 
+    border: 1px solid #e00000;
+
     font-size: 17px;
 }
 
-/* زمین بازی */
-
 .board {
     position: relative;
+
     width: 100%;
     max-width: 400px;
+
     margin: auto;
 }
 
@@ -65,21 +78,22 @@ canvas {
     display: block;
 
     width: 100%;
+
     aspect-ratio: 1 / 1;
 
-    background: #07130b;
+    background: #050505;
 
-    border: 4px solid #22c55e;
+    border: 4px solid #e00000;
 
     border-radius: 15px;
 
     box-shadow:
-        0 0 25px rgba(34,197,94,.35);
+        0 0 30px rgba(224,0,0,.4);
 
     touch-action: none;
 }
 
-/* نوشته وسط بازی */
+/* نام سازنده */
 
 .watermark {
     position: absolute;
@@ -87,26 +101,24 @@ canvas {
     top: 50%;
     left: 50%;
 
-    transform: translate(-50%, -50%);
+    transform:
+        translate(-50%, -50%);
 
-    width: 90%;
+    width: 95%;
 
-    font-family: Tahoma, Arial, sans-serif;
-
-    font-size: clamp(22px, 7vw, 38px);
+    font-size:
+        clamp(21px, 6vw, 35px);
 
     font-weight: bold;
 
-    color: rgba(255,255,255,0.13);
+    color:
+        rgba(255,255,255,0.10);
 
     pointer-events: none;
 
     user-select: none;
 
     white-space: nowrap;
-
-    text-shadow:
-        0 2px 5px rgba(0,0,0,.4);
 }
 
 .message {
@@ -116,10 +128,10 @@ canvas {
 
     font-weight: bold;
 
-    color: #fde68a;
+    color: #ff7777;
 }
 
-/* دکمه های کنترل */
+/* کنترل‌ها */
 
 .controls {
     width: 220px;
@@ -128,7 +140,8 @@ canvas {
 
     display: grid;
 
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns:
+        repeat(3, 1fr);
 
     gap: 8px;
 
@@ -142,7 +155,7 @@ canvas {
 
     border-radius: 14px;
 
-    background: #22c55e;
+    background: #d00000;
 
     color: white;
 
@@ -152,13 +165,16 @@ canvas {
 
     cursor: pointer;
 
-    box-shadow: 0 5px 0 #15803d;
+    box-shadow:
+        0 5px 0 #780000;
 }
 
 .controls button:active {
-    transform: translateY(4px);
+    transform:
+        translateY(4px);
 
-    box-shadow: 0 1px 0 #15803d;
+    box-shadow:
+        0 1px 0 #780000;
 }
 
 .up {
@@ -191,7 +207,7 @@ canvas {
 
     border-radius: 14px;
 
-    background: #8b5cf6;
+    background: #e00000;
 
     color: white;
 
@@ -205,9 +221,9 @@ canvas {
 }
 
 .restart:active {
-    transform: scale(.97);
+    transform:
+        scale(.97);
 }
-
 </style>
 </head>
 
@@ -239,8 +255,6 @@ canvas {
             width="400"
             height="400">
         </canvas>
-
-        <!-- نام سازنده -->
 
         <div class="watermark">
             امیر حسین درویشان
@@ -286,7 +300,9 @@ canvas {
     <button
         class="restart"
         onclick="startGame()">
+
         🔄 بازی جدید
+
     </button>
 
 </div>
@@ -306,6 +322,8 @@ const tileCount =
     canvas.width / gridSize;
 
 
+/* اطلاعات بازی */
+
 let snake;
 
 let apple;
@@ -314,21 +332,26 @@ let direction;
 
 let nextDirection;
 
-let score = 0;
+let score;
 
-let gameRunning = false;
+let gameRunning;
 
 let gameTimer;
 
 
+/* رکورد */
+
 let highScore =
     Number(
-        localStorage.getItem("snakeHighScore")
+        localStorage.getItem(
+            "snakeHighScore"
+        )
     ) || 0;
 
 
-document.getElementById("highScore")
-    .textContent = highScore;
+document.getElementById(
+    "highScore"
+).textContent = highScore;
 
 
 /* شروع بازی */
@@ -337,11 +360,11 @@ function startGame() {
 
     snake = [
 
-        {x: 10, y: 10},
+        { x: 10, y: 10 },
 
-        {x: 9, y: 10},
+        { x: 9, y: 10 },
 
-        {x: 8, y: 10}
+        { x: 8, y: 10 }
 
     ];
 
@@ -363,12 +386,14 @@ function startGame() {
     gameRunning = true;
 
 
-    document.getElementById("score")
-        .textContent = score;
+    document.getElementById(
+        "score"
+    ).textContent = score;
 
 
-    document.getElementById("message")
-        .textContent =
+    document.getElementById(
+        "message"
+    ).textContent =
         "🍎 سیب را بخور و بزرگ شو!";
 
 
@@ -378,12 +403,19 @@ function startGame() {
     clearInterval(gameTimer);
 
 
+    /*
+       سرعت مار
+       عدد بزرگ‌تر = حرکت کندتر
+    */
+
     gameTimer =
-        setInterval(gameLoop, 130);
+        setInterval(
+            gameLoop,
+            220
+        );
 
 
     draw();
-
 }
 
 
@@ -398,13 +430,17 @@ function createApple() {
 
         position = {
 
-            x: Math.floor(
-                Math.random() * tileCount
-            ),
+            x:
+                Math.floor(
+                    Math.random() *
+                    tileCount
+                ),
 
-            y: Math.floor(
-                Math.random() * tileCount
-            )
+            y:
+                Math.floor(
+                    Math.random() *
+                    tileCount
+                )
 
         };
 
@@ -417,7 +453,6 @@ function createApple() {
             part =>
 
                 part.x === position.x &&
-
                 part.y === position.y
 
         )
@@ -426,7 +461,6 @@ function createApple() {
 
 
     apple = position;
-
 }
 
 
@@ -434,10 +468,12 @@ function createApple() {
 
 function gameLoop() {
 
-    if (!gameRunning) return;
+    if (!gameRunning)
+        return;
 
 
-    direction = nextDirection;
+    direction =
+        nextDirection;
 
 
     const head = {
@@ -470,7 +506,6 @@ function gameLoop() {
         gameOver();
 
         return;
-
     }
 
 
@@ -483,7 +518,6 @@ function gameLoop() {
             part =>
 
                 part.x === head.x &&
-
                 part.y === head.y
 
         )
@@ -493,7 +527,6 @@ function gameLoop() {
         gameOver();
 
         return;
-
     }
 
 
@@ -505,7 +538,6 @@ function gameLoop() {
     if (
 
         head.x === apple.x &&
-
         head.y === apple.y
 
     ) {
@@ -513,9 +545,12 @@ function gameLoop() {
         score += 10;
 
 
-        document.getElementById("score")
-            .textContent = score;
+        document.getElementById(
+            "score"
+        ).textContent = score;
 
+
+        /* رکورد */
 
         if (score > highScore) {
 
@@ -530,8 +565,8 @@ function gameLoop() {
 
             document.getElementById(
                 "highScore"
-            ).textContent = highScore;
-
+            ).textContent =
+                highScore;
         }
 
 
@@ -547,7 +582,6 @@ function gameLoop() {
 
 
     draw();
-
 }
 
 
@@ -561,26 +595,27 @@ function gameOver() {
     clearInterval(gameTimer);
 
 
-    document.getElementById("message")
-        .textContent =
-        "💥 بازی تمام شد! دوباره امتحان کن.";
+    document.getElementById(
+        "message"
+    ).textContent =
+        "💥 بازی تمام شد!";
 
 
     draw(true);
-
 }
 
 
 /* تغییر جهت */
 
-function changeDirection(newDirection) {
+function changeDirection(
+    newDirection
+) {
 
     if (!gameRunning) {
 
         startGame();
 
         return;
-
     }
 
 
@@ -652,11 +687,14 @@ function changeDirection(newDirection) {
 
 /* رسم بازی */
 
-function draw(gameEnded = false) {
+function draw(
+    gameEnded = false
+) {
 
-    /* پس زمینه */
+    /* پس‌زمینه */
 
-    ctx.fillStyle = "#07130b";
+    ctx.fillStyle =
+        "#050505";
 
     ctx.fillRect(
         0,
@@ -714,7 +752,8 @@ function draw(gameEnded = false) {
 
     if (apple) {
 
-        ctx.fillStyle = "#ef4444";
+        ctx.fillStyle =
+            "#ff2222";
 
 
         ctx.beginPath();
@@ -738,9 +777,10 @@ function draw(gameEnded = false) {
         ctx.fill();
 
 
-        /* برگ */
+        /* برگ سیب */
 
-        ctx.fillStyle = "#22c55e";
+        ctx.fillStyle =
+            "#22c55e";
 
 
         ctx.beginPath();
@@ -776,14 +816,14 @@ function draw(gameEnded = false) {
             if (index === 0) {
 
                 ctx.fillStyle =
-                    "#86efac";
+                    "#ff5555";
 
             }
 
             else {
 
                 ctx.fillStyle =
-                    "#22c55e";
+                    "#e00000";
 
             }
 
@@ -812,14 +852,16 @@ function draw(gameEnded = false) {
     );
 
 
-    /* چشم‌های مار */
+    /* چشم‌ها */
 
     if (snake.length > 0) {
 
-        const head = snake[0];
+        const head =
+            snake[0];
 
 
-        ctx.fillStyle = "#111827";
+        ctx.fillStyle =
+            "#ffffff";
 
 
         let eye1;
@@ -829,19 +871,35 @@ function draw(gameEnded = false) {
         if (direction.x !== 0) {
 
             const eyeX =
+
                 head.x * gridSize +
-                (direction.x > 0 ? 14 : 6);
+
+                (
+                    direction.x > 0
+                    ? 14
+                    : 6
+                );
 
 
             eye1 = {
+
                 x: eyeX,
-                y: head.y * gridSize + 7
+
+                y:
+                    head.y *
+                    gridSize + 7
+
             };
 
 
             eye2 = {
+
                 x: eyeX,
-                y: head.y * gridSize + 13
+
+                y:
+                    head.y *
+                    gridSize + 13
+
             };
 
         }
@@ -849,13 +907,21 @@ function draw(gameEnded = false) {
         else {
 
             const eyeY =
+
                 head.y * gridSize +
-                (direction.y > 0 ? 14 : 6);
+
+                (
+                    direction.y > 0
+                    ? 14
+                    : 6
+                );
 
 
             eye1 = {
 
-                x: head.x * gridSize + 7,
+                x:
+                    head.x *
+                    gridSize + 7,
 
                 y: eyeY
 
@@ -864,7 +930,9 @@ function draw(gameEnded = false) {
 
             eye2 = {
 
-                x: head.x * gridSize + 13,
+                x:
+                    head.x *
+                    gridSize + 13,
 
                 y: eyeY
 
@@ -901,36 +969,44 @@ function draw(gameEnded = false) {
     }
 
 
-    /* پایان بازی */
+    /* صفحه پایان */
 
     if (gameEnded) {
 
         ctx.fillStyle =
-            "rgba(0,0,0,.55)";
+            "rgba(0,0,0,.65)";
 
 
         ctx.fillRect(
+
             0,
             0,
             canvas.width,
             canvas.height
+
         );
 
 
-        ctx.fillStyle = "white";
+        ctx.fillStyle =
+            "white";
 
 
         ctx.font =
             "bold 32px Tahoma";
 
 
-        ctx.textAlign = "center";
+        ctx.textAlign =
+            "center";
 
 
         ctx.fillText(
+
             "GAME OVER",
+
             canvas.width / 2,
+
             canvas.height / 2
+
         );
 
     }
@@ -938,31 +1014,46 @@ function draw(gameEnded = false) {
 }
 
 
-/* کنترل با کیبورد */
+/* کیبورد */
 
 document.addEventListener(
     "keydown",
     function(event) {
 
-        if (event.key === "ArrowUp") {
+        if (
+            event.key ===
+            "ArrowUp"
+        ) {
 
             changeDirection("up");
 
         }
 
-        if (event.key === "ArrowDown") {
+
+        if (
+            event.key ===
+            "ArrowDown"
+        ) {
 
             changeDirection("down");
 
         }
 
-        if (event.key === "ArrowLeft") {
+
+        if (
+            event.key ===
+            "ArrowLeft"
+        ) {
 
             changeDirection("left");
 
         }
 
-        if (event.key === "ArrowRight") {
+
+        if (
+            event.key ===
+            "ArrowRight"
+        ) {
 
             changeDirection("right");
 
@@ -972,7 +1063,7 @@ document.addEventListener(
 );
 
 
-/* شروع */
+/* شروع بازی */
 
 startGame();
 
